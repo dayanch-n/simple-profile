@@ -1,3 +1,5 @@
-export const routes = [];
+export const routes = [
+    
+];
 
 export const privateRoutes = [];
