@@ -170,7 +170,7 @@ const Register = () => {
               </div>
             </div>
           </div>
-          <Button disabled={Object.values(formData).every(Boolean) ? false : true} type="Submit">Register</Button>
+          <Button disabled={Object.values(formData).every(Boolean) ? false : true} type="submit">Register</Button>
         </form>
       </Card>
     </div>
