@@ -54,7 +54,7 @@ const Register = () => {
       <h3 className="text-2xl font-medium text-gray-900 dark:text-white">
         Sign in to our account
       </h3>
-      <Card width="100">
+      <Card width="3/12">
         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex w-full items-center justify-center">
             <div className="flex items-center overflow-hidden justify-center border-blue hover:bg-blue h-28 w-28 cursor-pointer flex-col rounded-full border bg-white uppercase tracking-wide shadow-lg hover:text-grey">

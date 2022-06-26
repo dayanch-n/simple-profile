@@ -1,5 +1,10 @@
-export const routes = [
-    
-];
+import Account from "./pages/account";
 
-export const privateRoutes = [];
+export const routes = [];
+
+export const privateRoutes = [
+  {
+    path: "/account",
+    element: <Account />,
+  },
+];

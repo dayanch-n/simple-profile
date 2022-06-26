@@ -1,6 +1,6 @@
 const Layout = ({ children }) => {
     return (
-        <div className="flex flex-wrap h-screen m-5">
+        <div className="flex h-screen w-screen m-5">
             {children}
         </div>
     )
