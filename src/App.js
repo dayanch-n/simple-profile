@@ -22,9 +22,9 @@ function App() {
     const user = localStorage.getItem("user");
     const convertUser = JSON.parse(user);
     if (convertUser) {
-      setLoadingUser(false);
       setUser(convertUser);
     }
+    setLoadingUser(false);
   }, []);
 
   return !loadingUser ? (
