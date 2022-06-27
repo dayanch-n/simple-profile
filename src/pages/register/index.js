@@ -3,6 +3,8 @@ import axios from "axios";
 import { createRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import Button from "../../components/button";
 import Card from "../../components/card";
@@ -21,7 +23,7 @@ const Register = () => {
   });
   const [error, setError] = useState();
   const ref = createRef();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const {
     register,
@@ -39,15 +41,11 @@ const Register = () => {
       return;
     }
     try {
-       await axios.post(
-        "http://localhost:8100/register",
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      await axios.post("http://localhost:8100/register", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       reset({
         name: "",
@@ -56,10 +54,12 @@ const Register = () => {
         gender: "Choose",
         dob: "",
       });
-      setFormData(prev => ({...prev, photo: ''}))
-      navigate('/login')
+      toast.success("Registered Successfully");
+      setFormData((prev) => ({ ...prev, photo: "" }));
+      navigate("/login");
     } catch (err) {
       console.log(err);
+      toast.error("Registration failed")
     }
   };
 
@@ -82,7 +82,7 @@ const Register = () => {
       <h3 className="text-2xl font-medium text-gray-900 dark:text-white">
         Sign in to our account
       </h3>
-      <Card width="3/12">
+      <Card>
         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex w-full items-center justify-center">
             <div className="flex items-center overflow-hidden justify-center border-blue hover:bg-blue h-28 w-28 cursor-pointer flex-col rounded-full border bg-white uppercase tracking-wide shadow-lg hover:text-grey">
@@ -164,7 +164,7 @@ const Register = () => {
               />
             </div>
             <div className="flex flex-row items-center justify-between space-x-2">
-              <div>
+              <div className="w-1/2">
                 <label
                   htmlFor="gender"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
@@ -185,7 +185,7 @@ const Register = () => {
                   <option value="Other">Other</option>
                 </select>
               </div>
-              <div>
+              <div className="w-1/2">
                 <label
                   htmlFor="countries"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
@@ -211,6 +211,17 @@ const Register = () => {
           </Button>
         </form>
       </Card>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };

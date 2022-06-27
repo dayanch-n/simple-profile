@@ -1,19 +1,19 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import Button from "../../components/button";
 import Input from "../../components/input";
 import getBase64 from "../../helpers/base64";
 
 const Account = () => {
-
   const initialState = {
     email: "",
     password: "",
     photo: "",
-  }
+  };
 
   const [formData, setFormData] = useState(initialState);
   const [currentUser, setCurrentUser] = useState();
@@ -31,26 +31,28 @@ const Account = () => {
   }, []);
 
   const onSubmit = async () => {
-  
     try {
       const { data } = await axios.put(
         `http://localhost:8100/account/${currentUser._id}`,
         {
           ...currentUser,
           name: formData.name ? formData.name : currentUser.name,
-          password: formData.password ? formData.password : currentUser.password,
-          photo: formData.photo ? formData.photo : currentUser.photo
+          password: formData.password
+            ? formData.password
+            : currentUser.password,
+          photo: formData.photo ? formData.photo : currentUser.photo,
         }
       );
 
       if (data) {
-        console.log(data.user);
-        setFormData({...initialState});
-        setCurrentUser({...data.user})
+        toast.success("Profile Updated!");
+        setFormData({ ...initialState });
+        setCurrentUser({ ...data.user });
         localStorage.setItem("user", JSON.stringify(data.user));
       }
     } catch (err) {
       console.log(err);
+      toast.error("Could not update your profile")
     }
   };
 
@@ -161,6 +163,17 @@ const Account = () => {
           </div>
         </form>
       </div>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };

@@ -3,6 +3,8 @@ import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import Button from "../../components/button";
 import Card from "../../components/card";
@@ -33,8 +35,12 @@ const Login = () => {
     }
 
     try {
-      const { data } = await axios.post("http://127.0.0.1:8100/login", formData);
+      const { data } = await axios.post(
+        "http://127.0.0.1:8100/login",
+        formData
+      );
       if (data) {
+        toast.success("Authenticated Successfully");
         localStorage.setItem("user", JSON.stringify(data.user));
         reset({
           email: "",
@@ -44,6 +50,7 @@ const Login = () => {
       }
     } catch (err) {
       console.log(err);
+      toast.error("Authentication failed.")
     }
   };
 
@@ -57,7 +64,7 @@ const Login = () => {
       <h3 className="text-2xl font-medium text-gray-900 dark:text-white">
         Sign in to our account
       </h3>
-      <Card width="3/12">
+      <Card>
         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col space-y-3">
             <div>
@@ -103,6 +110,17 @@ const Login = () => {
           </Button>
         </form>
       </Card>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };
