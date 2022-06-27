@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -108,6 +108,12 @@ const Login = () => {
           >
             Sign in
           </Button>
+          <div className="w-full flex justify-center items-center">
+            <p className="text-xs">
+              No Account yet? 
+              <Link to="/register" className="text-xs text-blue-600"> Register here</Link>
+            </p>
+          </div>
         </form>
       </Card>
       <ToastContainer
