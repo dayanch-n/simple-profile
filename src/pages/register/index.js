@@ -1,6 +1,8 @@
 /* eslint-disable no-useless-escape */
-import { useState } from "react";
+import axios from "axios";
+import { createRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 import Button from "../../components/button";
 import Card from "../../components/card";
@@ -18,20 +20,46 @@ const Register = () => {
     photo: "",
   });
   const [error, setError] = useState();
+  const ref = createRef();
+  const navigate = useNavigate()
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
       formData.email
     );
     if (!emailFormat) {
       setError("Please enter a valid email address");
       return;
+    }
+    try {
+       await axios.post(
+        "http://localhost:8100/register",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      reset({
+        name: "",
+        email: "",
+        password: "",
+        gender: "Choose",
+        dob: "",
+      });
+      setFormData(prev => ({...prev, photo: ''}))
+      navigate('/login')
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -70,6 +98,9 @@ const Register = () => {
                     Upload Photo
                   </span>
                   <input
+                    {...register("photo", {
+                      required: "Please select photo",
+                    })}
                     name="photo"
                     type="file"
                     className="hidden"
@@ -126,7 +157,7 @@ const Register = () => {
                 {...register("password", {
                   required: "Please insert new password",
                 })}
-                placeholder="example@gmail.com"
+                placeholder="******"
                 type="password"
                 name="password"
                 onChange={handleInputChange}
@@ -162,6 +193,7 @@ const Register = () => {
                   Date of birth
                 </label>
                 <DatePicker
+                  ref={ref}
                   {...register("dob", {
                     required: "Please insert your name",
                   })}
@@ -170,7 +202,13 @@ const Register = () => {
               </div>
             </div>
           </div>
-          <Button disabled={Object.values(formData).every(Boolean) ? false : true} type="submit">Register</Button>
+          <Button
+            ref={ref}
+            disabled={Object.values(formData).every(Boolean) ? false : true}
+            type="submit"
+          >
+            Register
+          </Button>
         </form>
       </Card>
     </div>
@@ -178,4 +216,3 @@ const Register = () => {
 };
 
 export default Register;
-
