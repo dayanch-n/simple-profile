@@ -6,7 +6,7 @@ const RequireAuth = ({
   redirectTo = "/login",
   user,
 }) => {
-  return children // user ? (children) : <Navigate to={redirectTo} />;
+  return user ? (children) : <Navigate to={redirectTo} />;
 };
 
 export default RequireAuth;

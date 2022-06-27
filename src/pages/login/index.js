@@ -1,6 +1,8 @@
 /* eslint-disable no-useless-escape */
+import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 import Button from "../../components/button";
 import Card from "../../components/card";
@@ -12,20 +14,36 @@ const Login = () => {
     password: "",
   });
   const [error, setError] = useState();
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
       formData.email
     );
     if (!emailFormat) {
       setError("Please enter a valid email address");
       return;
+    }
+
+    try {
+      const { data } = await axios.post("http://127.0.0.1:8100/login", formData);
+      if (data) {
+        localStorage.setItem("user", JSON.stringify(data.user));
+        reset({
+          email: "",
+          password: "",
+        });
+        navigate("/people");
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 

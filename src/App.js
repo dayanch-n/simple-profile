@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -16,7 +16,18 @@ import Page404 from "./pages/404";
 
 function App() {
   const [user, setUser] = useState();
-  return (
+  const [loadingUser, setLoadingUser] = useState(true);
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    const convertUser = JSON.parse(user);
+    if (convertUser) {
+      setLoadingUser(false);
+      setUser(convertUser);
+    }
+  }, []);
+
+  return !loadingUser ? (
     <Layout>
       <Router>
         <Routes>
@@ -42,6 +53,8 @@ function App() {
         </Routes>
       </Router>
     </Layout>
+  ) : (
+    <div />
   );
 }
 
