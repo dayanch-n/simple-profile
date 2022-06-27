@@ -31,7 +31,7 @@ function App() {
     <Layout>
       <Router>
         <Routes>
-          <Route path="/" element={<Navigate to="/register" />} />
+          <Route path="/" element={<Navigate to="/people" />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
 
